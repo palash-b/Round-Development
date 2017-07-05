@@ -1,0 +1,25 @@
+public class Sc{
+
+public static void main(Strings [] args)
+{
+File f = new File("");
+    Scanner r = null;
+    try {
+        r = new Scanner(f);
+        String scan;
+        while(r.hasNextLine()) {
+            scan = r.nextLine();
+            if(scan.length()==0) {continue;}
+            //treatment
+	
+        }
+    } catch (FileNotFoundException ex) {
+        Logger.getLogger(Lexique.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (IOException ex) {
+        Logger.getLogger(Lexique.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+        if(r!=null) r.close();
+
+    }
+}
+}

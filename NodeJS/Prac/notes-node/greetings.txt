@@ -1,0 +1,9 @@
+HelloHelloHelloHello undefined!Hello bhatiapa!Hello bhatiapa!Hello bhatiapa!Hello bhatiapa!Hello1 bhatiapa!Hello bhatiapa!Hello1 bhatiapa!Hello bhatiapa! You are 25 years old!Hello bhatiapa! You are function (){
+  return 80;
+} years old!Hello bhatiapa! You are function (){
+  return '80';
+} years old!Hello bhatiapa! You are ()=>{
+  return '80';
+} years old!Hello bhatiapa! You are ()=>{
+  return '80';
+} years old!
