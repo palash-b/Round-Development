@@ -1,6 +1,7 @@
-const request = require('request');
 const yargs = require('yargs');
-
+const geo= require('./geocode.js')
+const weather = require('./weather.js');
+const restaurants = require('./rest.js');
 const argv = yargs
 .options(
   {
@@ -9,43 +10,73 @@ const argv = yargs
               describe:'Enter an Address',
               alias:'a',
               string: true
-            }
+            },
+     number:{
+              demand:true,
+              descibe:'Enter the Number',
+              alias:'n',
+              string: true
+            },
+      typeOfService:{
+                      demand:true,
+                      descibe:'Enter the Type of Service',
+                      alias:'t',
+                      string: true
+                    }
+
+
   }
 )
 .help()
 .argv;
 
-
-var readyReq=encodeURIComponent(argv.address);
-
-
-request(
-  {
-    url: `http://maps.googleapis.com/maps/api/geocode/json?address=${readyReq}`,
-    json:true
-  },
-  (error,response,body)=>
+console.log(argv.number);
+console.log(argv.typeOfService);
+geo.geocodeAddress(argv.address,(errorMsg,results)=>
 {
-  console.log(JSON.stringify(body,undefined,2));
-var add = body.results[0].formatted_address;
-console.log('Address: ',add);
-  lat = body.results[0].geometry.location.lat;
-  console.log('Latitude: ',lat);
+  if (errorMsg)
+  {
+    console.log(errorMsg);
+  }
+  else {
+    //console.log(JSON.stringify(results,undefined,2));
+    console.log(`The Address is ${results.add}, while the Latitude is ${results.lat} and the longitude is ${results.lng}`);
+    var lat1 = results.lat;
+    var lng1 = results.lng;
+    //console.log(lat1,lng1);
+    // weather.getWeather(lat1,lng1,(errorMsgW,resultsW)=>
+    // {
+    //   if (errorMsgW)
+    //   {
+    //     console.log('There is an Error');
+    //     console.log(errorMsgW);
+    //   }
+    //   else
+    //   {
+    //     // console.log(JSON.stringify(resultsW,undefined,2));
+    //     console.log(`Its currently ${resultsW.currentTemp} whereas it feels like ${resultsW.apparentTemperature} and the forecast is ${resultsW.sum}`);
+    //   }
+    // });
 
-  lng = body.results[0].geometry.location.lng;
-  console.log('Longitude: ',lng);
+    restaurants.getRest(lat1,lng1,(errorMsgR,resultsR)=>
+    {
+      if(errorMsgR)
+      {
+        console.log("There is an Error in restaurants: ")
+        console.log(error);
+      }
+      else
+      {
+        console.log(`The info for restaurants is as follows: \n1.${resultsR.v1} at a distance of ${resultsR.d1} miles with rating of ${resultsR.r1}\n2.${resultsR.v2} at a distance of miles ${resultsR.d2} with rating of ${resultsR.r2} \n3.${resultsR.v3} at a distance of ${resultsR.d3} miles with rating of ${resultsR.r3}`);
+
+      }
+    });
 
 
+
+
+  }
 });
-//console.log(lng);
 
-// request(
-//   {
-//     url: `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lng},${lat}&radius=50&type=restaurant&key=AIzaSyDz1ohc0DNN2aaKpgl-EKVQhgth7D_j0HE`,
-//     json:true
-//   },
-//   (error,response,body)=>
-// {
-//   console.log(JSON.stringify(response,undefined,2));
-// }
-// );
+
+//restaurants.getRestaurants();
